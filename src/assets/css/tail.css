@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,800;1,600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+@tailwind variants;
+
+/* Base styling */
+@layer base {
+    body {
+        @apply text-[14px] relative scroll-smooth font-normal leading-[1.4] bg-transparent xxl:max-w-[2000px] mx-auto;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Montserrat', sans-serif;
+    }
+}
+
+/* Add components styling */
+@layer components {
+
+    .container-fluid {
+        --gutter-x: 1.5rem;
+        --gutter-y: 0;
+        width: 100%;
+        padding-right: calc(var(--gutter-x) * .5);
+        padding-left: calc(var(--gutter-x) * .5);
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .btn {
+        @apply bg-cyan-700 inline-block text-white rounded tracking-wider uppercase px-6 py-3 shadow-md drop-shadow-sm font-semibold outline-0 focus:outline-0 hover:bg-opacity-90 transition-colors;
+    }
+
+    .col-form-label {
+        @apply block font-semibold mb-2;
+    }
+
+    .form-control, .form-select, .form-textarea {
+        @apply bg-white w-full min-h-[45px] border-white outline-0 focus:outline-0 px-4 text-lg;
+    }
+    .form-checkbox {
+        @apply w-[20px] h-[20px] inline-block bg-gray-300;
+    }
+    .form-checkbox-label {
+        @apply w-[calc(100%-20px)] ml-5 text-sm font-medium inline-block;
+    }
+
+    .form-textarea {
+        @apply py-3;
+    }
+
+    .input-icon {
+        @apply relative;
+    }
+    .input-icon .icon {
+        @apply absolute left-[10px] top-[7px] w-[50px] h-[50px] z-[1];
+    }
+    .input-icon .form-control {
+        @apply min-h-[55px] pl-[60px];
+    }
+}
