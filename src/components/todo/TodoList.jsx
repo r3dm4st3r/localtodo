@@ -3,6 +3,7 @@ import {lazy, Suspense, useEffect, useState} from "react";
 import {Icon} from "@iconify/react/dist/iconify";
 import {weekDays} from "../../helpers/weekDays";
 import {randomID} from "../../helpers/randomID";
+import NothingHere from "../common/NothingHere";
 
 const CreateTodoBox = lazy(() => import("./CreateTodoBox"))
 const ShowTodoBox = lazy(() => import("./ShowTodoBox"))
@@ -16,7 +17,7 @@ const TodoList = () => {
     const isLocal = JSON.parse(localStorage.getItem('isLocal'))
     const [dayFilter, setDayFilter] = useState(date.getDay());
     const [removeList, setRemoveList] = useState(null);
-
+    const dayFilterData = app?.todoList?.filter((item) => item.created.day === dayFilter);
 
     const currToDo = [
         {
@@ -167,36 +168,40 @@ const TodoList = () => {
                             </div>
                         })}
                     </div>
-                    <div className="grid sm:grid-cols-2 gap-5">
-                        {app?.todoList?.filter((item) => item.created.day === dayFilter)?.map((list, listIndex) => {
-                            return (
-                                <div className="bg-white shadow-md drop-shadow-md last:mb-0" key={listIndex}>
-                                    <div className="bg-theme/5 mb-2 px-3 py-2 flex items-center justify-between">
-                                        <div className="flex items-center w-full">
+                    <div className={`grid ${dayFilterData.length > 0 ? 'sm:grid-cols-2' : 'grid-cols-1'} gap-5`}>
+                        {dayFilterData.length > 0 ? (
+                            dayFilterData?.map((list, listIndex) => {
+                                return(
+                                    <div className="bg-white shadow-md drop-shadow-md last:mb-0" key={listIndex}>
+                                        <div className="bg-theme/5 mb-2 px-3 py-2 flex items-center justify-between">
                                             <div className="flex items-center w-full">
-                                                <h5 className="mr-3">Tasks</h5>
-                                                {list?.isDone &&
-                                                    <span className="inline-block text-green-500">
+                                                <div className="flex items-center w-full">
+                                                    <h5 className="mr-3">Tasks</h5>
+                                                    {list?.isDone &&
+                                                        <span className="inline-block text-green-500">
                                                         <Icon icon="heroicons-solid:badge-check" />
                                                     </span>
-                                                }
-                                            </div>
-                                            <div className="flex items-center justify-end w-full">
-                                                <div title="Remove this card" className="cursor-pointer" onClick={() => removeTodoList('removeCard' , listIndex)}>
-                                                    <Icon width={25} icon="material-symbols:clear-all" />
+                                                    }
+                                                </div>
+                                                <div className="flex items-center justify-end w-full">
+                                                    <div title="Remove this card" className="cursor-pointer" onClick={() => removeTodoList('removeCard' , listIndex)}>
+                                                        <Icon width={25} icon="material-symbols:clear-all" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <ShowTodoBox list={list}
+                                                     listIndex={listIndex}
+                                                     listID={list.id}
+                                                     handleCheckBox={handleCheckBox}
+                                                     removeTodoItem={removeTodoItem}
+                                        />
                                     </div>
-                                    <ShowTodoBox list={list}
-                                                 listIndex={listIndex}
-                                                 listID={list.id}
-                                                 handleCheckBox={handleCheckBox}
-                                                 removeTodoItem={removeTodoItem}
-                                    />
-                                </div>
-                            )
-                        }).reverse()}
+                                )
+                            }).reverse()
+                        ) : (
+                            <NothingHere />
+                        )}
                     </div>
                 </div>
             </section>
